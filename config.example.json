@@ -1,0 +1,16 @@
+{
+    "BOT_TOKEN": "",
+    "BOT_PREFIX": "",
+    "CHANNELS": {
+        "LOGS": "",
+        "BOTS_COMMANDS": ""
+    },
+    "DISCORD_MAIN_GUILD_ID": "",
+    "OTHERS": {
+        "GITHUB": "https://github.com/guillaumearnx"
+    },
+    "OWNERS": [{
+        "ID": "",
+        "NAME": ""
+    }]
+}
