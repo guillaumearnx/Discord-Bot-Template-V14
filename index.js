@@ -1,9 +1,10 @@
 //Dépendences
-const {Client, Collection} = require('discord.js');
-const {SlashCommandBuilder} = require('@discordjs/builders');
+const { Client, Collection } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require('fs');
+const path = require('path')
 const recursiveRead = require('recursive-readdir');
-const {BOT_TOKEN, BOT_PREFIX, DISCORD_MAIN_GUILD_ID} = require('./config.json');
+const { BOT_TOKEN, BOT_PREFIX, DISCORD_MAIN_GUILD_ID } = require('./config.json');
 require('colors');
 
 //Verification config
@@ -33,6 +34,7 @@ require('colors');
 //Variables d'environnement
 let nbCommandes = 0;
 let nbEvents = 0;
+let nbInteractions = 0;
 
 //Variable Client
 const bot = new Client({
@@ -61,12 +63,12 @@ fs.readdir('./events/', (err, files) => {
 });
 
 // noinspection JSIgnoredPromiseFromCall
-(async () => {
+(async() => {
     await recursiveRead('./commands/', (err, files) => {
         if (err) return console.error(err);
         console.log(`\nCommandes : ` + `(${files.length})`.yellow);
         files.forEach((file) => {
-            if (!file.endsWith('.js') || file.startsWith('-')) return
+            if (!file.endsWith('.js') || file.substr(file.indexOf(path.sep) + 1, file.length).startsWith('-')) return
             let props = require(`./${file}`);
             let commandName = props.config.name.toLowerCase();
             bot.commands.set(commandName, props);
@@ -83,7 +85,7 @@ fs.readdir('./events/', (err, files) => {
     });
 })();
 
-(async () => {
+(async() => {
     await recursiveRead('./interactions/', (err, files) => {
         if (err) return console.error(err);
         console.log(`\nInteractions : ` + `(${files.length})`.yellow);
@@ -94,7 +96,7 @@ fs.readdir('./events/', (err, files) => {
             const commandBuilder = new SlashCommandBuilder().setName(name).setDescription(interaction.config.description)
             console.log(`\tChargement de l'interaction : ` + `/${name}`.brightRed);
             interaction.options.map(op => {
-                const {type} = op;
+                const { type } = op;
                 switch (type) {
                     case 1:
                         commandBuilder.addUserOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description));
@@ -120,7 +122,9 @@ fs.readdir('./events/', (err, files) => {
                 }
             })
             bot.interactions.set(name, commandBuilder);
+            nbInteractions++;
         })
+        if (nbInteractions === 0) console.log("Aucune interraction active".yellow)
     });
 })();
 
@@ -132,10 +136,10 @@ bot.login(BOT_TOKEN).catch(() => {
 
 //Debug
 bot.on("warn", (e) => console.warn(e));
-process.on('unhandledRejection', async (error) => {
+process.on('unhandledRejection', async(error) => {
     console.error(error)
     process.exit(-1)
-}).on('uncaughtException', async (error) => {
+}).on('uncaughtException', async(error) => {
     console.error(error)
     process.exit(-1)
 })

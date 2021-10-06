@@ -6,7 +6,7 @@ const { Routes } = require('discord-api-types/v9');
 
 module.exports = async(bot) => {
     console.info(`\nLogged in as ${bot.user.tag}!`.blue);
-    if (bot.interactions.size() > 0)
+    if (bot.interactions.length > 0)
         try {
             await rest.put(Routes.applicationGuildCommands(BOT_ID, DISCORD_MAIN_GUILD_ID), { body: Array.from(bot.interactions.values()) })
         } catch (err) {
