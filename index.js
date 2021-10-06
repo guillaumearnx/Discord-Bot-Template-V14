@@ -52,7 +52,7 @@ fs.readdir('./events/', (err, files) => {
     if (err) return console.error(err)
     console.log(`\nÉvènements : ` + `(${files.length})`.yellow);
     files.forEach(file => {
-        if (!file.endsWith('.js') || file.startsWith('-')) return;
+        if (!file.endsWith('.js') || file.substr(file.indexOf(path.sep) + 1, file.length).startsWith('-')) return;
         nbEvents++
         const event = require(`./events/${file}`);
         let eventName = file.split('.')[0];
@@ -90,7 +90,7 @@ fs.readdir('./events/', (err, files) => {
         if (err) return console.error(err);
         console.log(`\nInteractions : ` + `(${files.length})`.yellow);
         files.forEach((file) => {
-            if (!file.endsWith('.js') || file.startsWith('-')) return
+            if (!file.endsWith('.js') || file.substr(file.indexOf(path.sep) + 1, file.length).startsWith('-')) return
             const interaction = require(`./${file}`);
             const name = interaction.config.name;
             const commandBuilder = new SlashCommandBuilder().setName(name).setDescription(interaction.config.description)
