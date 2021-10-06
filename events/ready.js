@@ -1,14 +1,15 @@
-const { REST } = require('@discordjs/rest');
-const { BOT_TOKEN, BOT_ID, DISCORD_MAIN_GUILD_ID } = require("../config.json");
+const {REST} = require('@discordjs/rest');
+const {BOT_TOKEN, BOT_ID, DISCORD_MAIN_GUILD_ID} = require("../config.json");
 // noinspection JSClosureCompilerSyntax,JSCheckFunctionSignatures
-const rest = new REST({ version: '9' }).setToken(BOT_TOKEN);
-const { Routes } = require('discord-api-types/v9');
+const rest = new REST({version: '9'}).setToken(BOT_TOKEN);
+const {Routes} = require('discord-api-types/v9');
 
-module.exports = async(bot) => {
+module.exports = async (bot) => {
     console.info(`\nLogged in as ${bot.user.tag}!`.blue);
-    if (bot.interactions.length > 0)
+    const interactions = Array.from(bot.interactions.values());
+    if (interactions.length > 0)
         try {
-            await rest.put(Routes.applicationGuildCommands(BOT_ID, DISCORD_MAIN_GUILD_ID), { body: Array.from(bot.interactions.values()) })
+            await rest.put(Routes.applicationGuildCommands(BOT_ID, DISCORD_MAIN_GUILD_ID), {body: interactions})
         } catch (err) {
             console.error(err);
             process.exit(-2);
