@@ -13,12 +13,21 @@ module.exports = {
         //Optionnal fields
         {type: 1, name: 'user', description: 'Mention user.', required: false},
         {type: 3, name: 'channel', description: 'Mention channel.', required: true}
+        {
+            type: 5, name: 'mode', description: 'Application mode.', required: false, choices: [
+                ["Fast Mode", 1],
+                ["Full Mode", 2]
+            ]
+        }
     ],
     run: async (client, interaction) => {
         //Main Instructions
     }
 }
 ```
+
+Please note that options for interaction in **run()** method are stored in **interaction.options._hoistedOptions** in an
+Array
 
 # Options :
 

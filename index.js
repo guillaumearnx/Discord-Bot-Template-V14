@@ -1,10 +1,10 @@
 //Dépendences
-const { Client, Collection } = require('discord.js');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const {Client, Collection} = require('discord.js');
+const {SlashCommandBuilder} = require('@discordjs/builders');
 const fs = require('fs');
 const path = require('path')
 const recursiveRead = require('recursive-readdir');
-const { BOT_TOKEN, BOT_PREFIX, DISCORD_MAIN_GUILD_ID } = require('./config.json');
+const {BOT_TOKEN, BOT_PREFIX, DISCORD_MAIN_GUILD_ID} = require('./config.json');
 require('colors');
 
 //Verification config
@@ -63,7 +63,7 @@ fs.readdir('./events/', (err, files) => {
 });
 
 // noinspection JSIgnoredPromiseFromCall
-(async() => {
+(async () => {
     await recursiveRead('./commands/', (err, files) => {
         if (err) return console.error(err);
         console.log(`\nCommandes : ` + `(${files.length})`.yellow);
@@ -85,7 +85,7 @@ fs.readdir('./events/', (err, files) => {
     });
 })();
 
-(async() => {
+(async () => {
     await recursiveRead('./interactions/', (err, files) => {
         if (err) return console.error(err);
         console.log(`\nInteractions : ` + `(${files.length})`.yellow);
@@ -96,28 +96,28 @@ fs.readdir('./events/', (err, files) => {
             const commandBuilder = new SlashCommandBuilder().setName(name).setDescription(interaction.config.description)
             console.log(`\tChargement de l'interaction : ` + `/${name}`.brightRed);
             interaction.options.map(op => {
-                const { type } = op;
+                const {type} = op;
                 switch (type) {
                     case 1:
-                        commandBuilder.addUserOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description));
+                        commandBuilder.addUserOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false));
                         break;
                     case 2:
-                        commandBuilder.addRoleOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description));
+                        commandBuilder.addRoleOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false));
                         break;
                     case 3:
-                        commandBuilder.addChannelOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required));
+                        commandBuilder.addChannelOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required).setRequired(op.required ? op.required : false));
                         break;
                     case 4:
-                        commandBuilder.addStringOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required));
+                        commandBuilder.addStringOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required).setRequired(op.required ? op.required : false));
                         break;
                     case 5:
-                        commandBuilder.addIntegerOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description));
+                        commandBuilder.addIntegerOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false).addChoices(op.choices ? op.choices : []));
                         break;
                     case 6:
-                        commandBuilder.addBooleanOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description));
+                        commandBuilder.addBooleanOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false));
                         break;
                     case 7:
-                        commandBuilder.addMentionableOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description))
+                        commandBuilder.addMentionableOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false))
                         break;
                 }
             })
@@ -136,10 +136,10 @@ bot.login(BOT_TOKEN).catch(() => {
 
 //Debug
 bot.on("warn", (e) => console.warn(e));
-process.on('unhandledRejection', async(error) => {
+process.on('unhandledRejection', async (error) => {
     console.error(error)
     process.exit(-1)
-}).on('uncaughtException', async(error) => {
+}).on('uncaughtException', async (error) => {
     console.error(error)
     process.exit(-1)
 })
