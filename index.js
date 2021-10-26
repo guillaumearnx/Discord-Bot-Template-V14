@@ -1,6 +1,7 @@
 //Dépendences
 const {Client, Collection} = require('discord.js');
 const {SlashCommandBuilder} = require('@discordjs/builders');
+const {run} = require('npm-check-updates');
 const fs = require('fs');
 const path = require('path')
 const recursiveRead = require('recursive-readdir');
@@ -46,6 +47,20 @@ bot.aliases = new Collection();
 bot.interactions = new Collection();
 
 console.log(("Lancement du bot ...").brightRed);
+
+//Packages
+(async () => {
+    const r = await run({
+        packageFile: 'package.json'
+    });
+    if (Object.keys(r).length > 0) {
+        console.log('Des mises à jour sont disponibles pour vos packages'.yellow)
+        for (const [key, value] of Object.entries(r)) {
+            console.log(`${key} -> ${value}`.magenta)
+        }
+    } else
+        console.log('Tous vos packages sont à jour.'.magenta)
+})();
 
 //Évenements et commandes
 fs.readdir('./events/', (err, files) => {
