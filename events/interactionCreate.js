@@ -19,7 +19,10 @@ module.exports = async (bot, interaction) => {
                     return interaction.reply({content: 'Vous ne pouvez pas faire ça !', ephemeral: true});
                 }
                 if (interactionConfig.forceBotChannel && ([CHANNELS["BOT_COMMANDS"], CHANNELS["BOT_PUBLIC_COMMANDS"]].indexOf(interaction.channel.id) < 0)) {
-                    return interaction.reply({content: 'Vous ne pouvez pas faire ça ici !', ephemeral: true});
+                    return interaction.reply({
+                        content: `Vous ne pouvez pas faire ça ici ! ${CHANNELS["BOT_COMMANDS"] ? `Essayez dans <#${CHANNELS["BOT_COMMANDS"]}>` : CHANNELS["BOT_PUBLIC_COMMANDS"] ? `Essayez dans <#${CHANNELS["BOT_PUBLIC_COMMANDS"]}>` : ''}`,
+                        ephemeral: true
+                    });
                 }
             }
             await interactionF.run(bot, interaction);
