@@ -12,7 +12,7 @@ module.exports = {
     options: [
         //Optionnal fields
         {type: 1, name: 'user', description: 'Mention user.', required: false},
-        {type: 3, name: 'channel', description: 'Mention channel.', required: true}
+        {type: 3, name: 'channel', description: 'Mention channel.', required: true},
         {
             type: 5, name: 'mode', description: 'Application mode.', required: false, choices: [
                 ["Fast Mode", 1],
