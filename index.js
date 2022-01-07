@@ -5,7 +5,7 @@ const {run} = require('npm-check-updates');
 const fs = require('fs');
 const path = require('path')
 const recursiveRead = require('recursive-readdir');
-const {BOT_TOKEN, BOT_PREFIX, DISCORD_MAIN_GUILD_ID} = require('./config.json');
+const {BOT_TOKEN, DISCORD_MAIN_GUILD_ID} = require('./config.json');
 require('colors');
 
 //Verification config
@@ -20,10 +20,6 @@ require('colors');
     ]
     if (empty[0].indexOf(BOT_TOKEN) > -1 || empty[1].indexOf(BOT_TOKEN) > -1) {
         console.log("Please set a bot token !");
-        process.exit(0);
-    }
-    if (empty[0].indexOf(BOT_PREFIX) > -1 || empty[1] === BOT_PREFIX) {
-        console.log("Please set a prefix !");
         process.exit(0);
     }
     if (empty[0].indexOf(DISCORD_MAIN_GUILD_ID) > -1 || empty[1] === DISCORD_MAIN_GUILD_ID) {
