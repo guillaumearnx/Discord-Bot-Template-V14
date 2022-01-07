@@ -2,7 +2,7 @@
   "name": "guigzbot",
   "version": "1.0.0",
   "dependencies": {
-    "@discordjs/builders": "^0.9.0",
+    "@discordjs/builders": "^0.11.0",
     "@discordjs/rest": "^0.2.0-canary.0",
     "colors": "^1.4.0",
     "discord-api-types": "^0.25.0",
