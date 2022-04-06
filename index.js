@@ -14,10 +14,7 @@ require('colors');
         console.log("Please create a config.json");
         process.exit(-1)
     }
-    const empty = [
-        ["", " "],
-        [null, undefined]
-    ]
+    const empty = [["", " "], [null, undefined]]
     if (empty[0].indexOf(BOT_TOKEN) > -1 || empty[1].indexOf(BOT_TOKEN) > -1) {
         console.log("Please set a bot token !");
         process.exit(0);
@@ -54,8 +51,7 @@ console.log(("Lancement du bot ...").brightRed);
         for (const [key, value] of Object.entries(r)) {
             console.log(`${key} -> ${value}`.magenta)
         }
-    } else
-        console.log('Tous vos packages sont à jour.'.magenta)
+    } else console.log('Tous vos packages sont à jour.'.magenta)
 })();
 
 //Évenements et commandes
@@ -63,7 +59,7 @@ fs.readdir('./events/', (err, files) => {
     if (err) return console.error(err)
     console.log(`\nÉvènements : ` + `(${files.length})`.yellow);
     files.forEach(file => {
-        if (!file.endsWith('.js') || file.substr(file.indexOf(path.sep) + 1, file.length).startsWith('-')) return;
+        if (!file.endsWith('.js') || file.substring(file.indexOf(path.sep) + 1).startsWith('-')) return;
         nbEvents++
         const event = require(`./events/${file}`);
         let eventName = file.split('.')[0];
@@ -79,7 +75,7 @@ fs.readdir('./events/', (err, files) => {
         if (err) return console.error(err);
         console.log(`\nCommandes : ` + `(${files.length})`.yellow);
         files.forEach((file) => {
-            if (!file.endsWith('.js') || file.substr(file.indexOf(path.sep) + 1, file.length).startsWith('-')) return
+            if (!file.endsWith('.js') || file.substring(file.indexOf(path.sep) + 1).startsWith('-')) return
             let props = require(`./${file}`);
             let commandName = props.config.name.toLowerCase();
             bot.commands.set(commandName, props);
@@ -101,7 +97,7 @@ fs.readdir('./events/', (err, files) => {
         if (err) return console.error(err);
         console.log(`\nInteractions : ` + `(${files.length})`.yellow);
         files.forEach((file) => {
-            if (!file.endsWith('.js') || file.substr(file.indexOf(path.sep) + 1, file.length).startsWith('-')) return
+            if (!file.endsWith('.js') || file.substring(file.indexOf(path.sep) + 1).startsWith('-')) return
             const interaction = require(`./${file}`);
             const name = interaction.config.name;
             const commandBuilder = new SlashCommandBuilder().setName(name).setDescription(interaction.config.description)
