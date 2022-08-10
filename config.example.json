@@ -1,13 +1,14 @@
 {
-  "BOT_ID": "",
-  "BOT_TOKEN": "",
-  "BOT_PREFIX": "",
+  "CLIENT": {
+    "ID": "",
+    "TOKEN": "",
+    "MAIN_GUILD_ID": ""
+  },
   "CHANNELS": {
     "LOGS": "",
-    "BOT_COMMANDS": "",
-    "BOT_PUBLIC_COMMANDS": ""
+    "COMMANDS": "",
+    "PUBLIC_COMMANDS": ""
   },
-  "DISCORD_MAIN_GUILD_ID": "",
   "OTHERS": {
     "GITHUB": "https://github.com/guillaumearnx"
   },
