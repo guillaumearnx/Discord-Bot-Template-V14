@@ -1,34 +1,41 @@
 const {checkOwner} = require('../utils/functions')
 const {CHANNELS} = require("../config.json")
 
+let handle = async (run, fail) => {
+    try {
+        await run();
+    } catch (error) {
+        await fail();
+    }
+}
+
 module.exports = async (bot, interaction) => {
-    if (interaction.isCommand()) {
+    if (interaction.isChatInputCommand()) {
         const interactionCommand = bot.interactions.get(interaction.commandName);
-        const interactionF = require(`../interactions/${interaction.commandName}`);
-        const interactionConfig = interactionF.config;
-        if (!interactionCommand || !interactionF) return;
+        const file = require(`../interactions/${interaction.commandName}`);
+        if (!interactionCommand || !file) return;
         try {
-            if (interactionConfig.specialPermissions.toLowerCase() === 'owner' && !await checkOwner(interaction.user.id)) {
-                return interaction.reply({content: 'Vous ne pouvez pas faire ça !', ephemeral: true});
-            }
-            if (interactionConfig.specialPermissions.toLowerCase() === 'moderator' && !interaction.member.permissions.has('KICK_MEMBERS', true)) {
-                return interaction.reply({content: 'Vous ne pouvez pas faire ça !', ephemeral: true});
+            if ((file.config['specialPermissions'].toLowerCase() === 'owner' && !await checkOwner(interaction.user.id)) || (file.config.specialPermissions.toLowerCase() === 'moderator' && !interaction.member.permissions.has('KICK_MEMBERS', true))) {
+                return interaction.reply({content: 'You can\'t do that !', ephemeral: true});
             }
             if (!interaction.member.permissions.has('ADMINISTRATOR', true)) {
-                if (interactionConfig.specialPermissions.toLowerCase() === 'administrator') {
-                    return interaction.reply({content: 'Vous ne pouvez pas faire ça !', ephemeral: true});
+                if (file.config['specialPermissions'].toLowerCase() === 'administrator') {
+                    return interaction.reply({content: 'You can\'t do that !', ephemeral: true});
                 }
-                if (interactionConfig.forceBotChannel && ([CHANNELS["BOT_COMMANDS"], CHANNELS["BOT_PUBLIC_COMMANDS"]].indexOf(interaction.channel.id) < 0)) {
+                if (file.config['inBotChannels'] && ([CHANNELS["COMMANDS"], CHANNELS["PUBLIC_COMMANDS"]].indexOf(interaction.channel.id) < 0)) {
                     return interaction.reply({
-                        content: `Vous ne pouvez pas faire ça ici ! ${CHANNELS["BOT_COMMANDS"] ? `Essayez dans <#${CHANNELS["BOT_COMMANDS"]}>` : CHANNELS["BOT_PUBLIC_COMMANDS"] ? `Essayez dans <#${CHANNELS["BOT_PUBLIC_COMMANDS"]}>` : ''}`,
+                        content: `You can\'t do that here ! ${CHANNELS["COMMANDS"] ? `Try in <#${CHANNELS["COMMANDS"]}>` : CHANNELS["PUBLIC_COMMANDS"] ? `Try in <#${CHANNELS["BOT_PUBLIC_COMMANDS"]}>` : ''}`,
                         ephemeral: true
                     });
                 }
             }
-            await interactionF.run(bot, interaction);
+            await file.run(bot, interaction, interaction.options._hoistedOptions);
         } catch (error) {
             console.error(error)
-            await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
+            const data = {
+                content: ':x: There was an error while executing this command !', ephemeral: true
+            };
+            await handle(() => interaction.reply(data), () => interaction.editReply(data));
         }
     }
 
