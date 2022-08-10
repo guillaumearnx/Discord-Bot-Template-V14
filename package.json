@@ -7,7 +7,9 @@
     "dev": "nodemon index.js",
     "interactions:guild": "node utils/deploy-integrations.js",
     "interactions:global": "node utils/deploy-integrations-global.js",
-    "interactions:remove": "node utils/remove-integrations.js"
+    "interactions:remove": "node utils/remove-integrations.js",
+    "lint": "eslint . --ext .js,.json",
+    "lint-fix": "eslint . --ext .js,.json --fix"
   },
   "dependencies": {
     "@discordjs/rest": "^1.0.1",
@@ -17,6 +19,7 @@
     "npm-check-updates": "^16.0.5"
   },
   "devDependencies": {
+    "eslint": "^8.21.0",
     "nodemon": "^2.0.19"
   }
 }
