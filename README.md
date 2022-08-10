@@ -5,10 +5,10 @@
 <img src="https://img.shields.io/discord/840647292864430080.svg?colorB=Blue&logo=discord&label=Support&style=for-the-badge" alt="Support">
 </a>
 <a href="https://github.com/guillaumearnx/Discord-Bot-Template-V14/issues">
-<img src="https://img.shields.io/github/issues/guillaumearnx/Discord-Bot-Template-V14.svg?style=for-the-badge">
+<img src="https://img.shields.io/github/issues/guillaumearnx/Discord-Bot-Template-V14.svg?style=for-the-badge" alt="issues">
 </a>
 <a href="https://github.com/guillaumearnx/Discord-Bot-Template-V14/pulls">
-<img src="https://img.shields.io/github/issues-pr/guillaumearnx/Discord-Bot-Template-V14.svg?style=for-the-badge">
+<img src="https://img.shields.io/github/issues-pr/guillaumearnx/Discord-Bot-Template-V14.svg?style=for-the-badge" alt="pr">
 </a>
 <br>
 </div>
