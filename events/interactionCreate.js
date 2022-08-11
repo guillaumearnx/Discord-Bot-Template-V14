@@ -1,5 +1,4 @@
-const { checkOwner } = require("../utils/functions");
-const { CHANNELS } = require("../config.json");
+const { CHANNELS, OWNERS } = require("../config.json");
 
 const handle = async (run, fail) => {
 	try {
@@ -16,16 +15,16 @@ module.exports = async (bot, interaction) => {
 		const file = require(`../interactions/${interaction.commandName}`);
 		if (!interactionCommand || !file) return;
 		try {
-			if ((file.config["specialPermissions"].toLowerCase() === "owner" && !await checkOwner(interaction.user.id)) || (file.config["specialPermissions"].toLowerCase() === "moderator" && !interaction.member.permissions.has("KICK_MEMBERS", true))) {
-				return interaction.reply({ content: "You can't do that !", ephemeral: true });
+			if ((file.config["specialPermissions"].toLowerCase() === "owner" && !OWNERS.map(o => `${o["ID"]}`).includes(`${interaction.user.id}`)) || (file.config["specialPermissions"].toLowerCase() === "moderator" && !interaction.member.permissions.has("KICK_MEMBERS", true))) {
+				return interaction.reply({ content: ":x: You can't do that !", ephemeral: true });
 			}
-			if (!interaction.member.permissions.has("ADMINISTRATOR", true)) {
+			if (!interaction.member.permissions.has("Administrator", true)) {
 				if (file.config["specialPermissions"].toLowerCase() === "administrator") {
-					return interaction.reply({ content: "You can't do that !", ephemeral: true });
+					return interaction.reply({ content: ":x: You can't do that !", ephemeral: true });
 				}
 				if (file.config["inBotChannels"] && ([CHANNELS["COMMANDS"], CHANNELS["PUBLIC_COMMANDS"]].indexOf(interaction.channel.id) < 0)) {
 					return interaction.reply({
-						content: `You can't do that here ! ${CHANNELS["COMMANDS"] ? `Try in <#${CHANNELS["COMMANDS"]}>` : CHANNELS["PUBLIC_COMMANDS"] ? `Try in <#${CHANNELS["BOT_PUBLIC_COMMANDS"]}>` : ""}`,
+						content: `You can't do that here ! ${CHANNELS["COMMANDS"] ? `Try in <#${CHANNELS["PUBLIC_COMMANDS"]}>` : CHANNELS["PUBLIC_COMMANDS"] ? `Try in <#${CHANNELS["COMMANDS"]}>` : ""}`,
 						ephemeral: true,
 					});
 				}
@@ -40,5 +39,4 @@ module.exports = async (bot, interaction) => {
 			await handle(() => interaction.reply(data), () => interaction.editReply(data));
 		}
 	}
-
 };

@@ -1,16 +1,9 @@
 const { Routes, Collection, SlashCommandBuilder } = require("discord.js");
 const { REST } = require("@discordjs/rest");
-const { CLIENT, OWNERS } = require("../config.json");
+const { CLIENT, OWNERS, CHANNELS } = require("../config.json");
 const { sep } = require("path");
 const { promises } = require("fs");
 require("colors");
-
-const checkOwner = async (id) => {
-	for (const owner of OWNERS) {
-		if (owner["ID"] === id) return true;
-	}
-	return false;
-};
 
 const deployInteractions = async (global = false, interactions = false) => {
 	console.info("\nDeploying interactions".blue + ` ${global ? "on all guilds".cyan : "on main guild".cyan}`);
@@ -27,7 +20,6 @@ const deployInteractions = async (global = false, interactions = false) => {
 			// noinspection JSUnresolvedFunction
 			await rest.put(Routes.applicationGuildCommands(CLIENT["ID"], CLIENT["MAIN_GUILD_ID"]), { body: interactions });
 		}
-
 		console.log("\nIntegrations deployed".green);
 	}
 };
@@ -72,13 +64,14 @@ const loadInteractions = async () => {
 					break;
 				}
 			});
+			commandBuilder.config = interaction.config;
 			interactions.set(name, commandBuilder);
 			nbInteractions++;
 		});
 	}
 	catch (err) {
 		console.error(err);
-		process.exit(2)
+		process.exit(533);
 	}
 	if (nbInteractions === 0) console.log("No interactions".yellow); else console.log(`\n${nbInteractions} interaction(s) loaded`.yellow);
 	return interactions;
@@ -102,5 +95,5 @@ const buildOptionWithChoices = (optionData, optionCreated) => {
 };
 
 module.exports = {
-	checkOwner, deployInteractions, loadInteractions, removeIntegrations,
+	deployInteractions, loadInteractions, removeIntegrations,
 };
