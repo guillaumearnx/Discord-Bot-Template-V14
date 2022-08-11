@@ -47,10 +47,10 @@ const loadInteractions = async () => {
 			interaction.options.map(op => {
 				switch (op.type) {
 				case 3:
-					commandBuilder.addStringOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required).setRequired(op.required ? op.required : false).addChoices(op.choices ? op.choices : []));
+					commandBuilder.addStringOption(option => buildOptionWithChoices(op, option));
 					break;
 				case 4:
-					commandBuilder.addIntegerOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false).addChoices(op.choices ? op.choices : []));
+					commandBuilder.addIntegerOption(option => buildOptionWithChoices(op, option));
 					break;
 				case 5:
 					commandBuilder.addBooleanOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false));
@@ -65,7 +65,7 @@ const loadInteractions = async () => {
 					commandBuilder.addRoleOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false));
 					break;
 				case 10:
-					commandBuilder.addNumberOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false).addChoices(op.choices ? op.choices : []));
+					commandBuilder.addNumberOption(option => buildOptionWithChoices(op, option));
 					break;
 				case 11:
 					commandBuilder.addAttachmentOption(option => option.setName(op.name.toLowerCase()).setDescription(op.description).setRequired(op.required ? op.required : false));
@@ -78,6 +78,7 @@ const loadInteractions = async () => {
 	}
 	catch (err) {
 		console.error(err);
+		process.exit(2)
 	}
 	if (nbInteractions === 0) console.log("No interactions".yellow); else console.log(`\n${nbInteractions} interaction(s) loaded`.yellow);
 	return interactions;
@@ -90,6 +91,14 @@ const removeIntegrations = async () => {
 	// noinspection JSUnresolvedFunction
 	await rest.put(Routes.applicationGuildCommands(CLIENT["ID"], CLIENT["MAIN_GUILD_ID"]), { body: [] });
 	console.log("\nIntegrations removed".green);
+};
+
+const buildOptionWithChoices = (optionData, optionCreated) => {
+	{
+		optionCreated = optionCreated.setName(optionData.name.toLowerCase()).setDescription(optionData.description).setRequired(optionData.required).setRequired(optionData.required ? optionData.required : false);
+		if (optionData.choices) {optionCreated = optionCreated.addChoices(...optionData.choices);}
+		return optionCreated;
+	}
 };
 
 module.exports = {

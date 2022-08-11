@@ -8,8 +8,8 @@
     "interactions:guild": "node utils/deploy-integrations.js",
     "interactions:global": "node utils/deploy-integrations-global.js",
     "interactions:remove": "node utils/remove-integrations.js",
-    "lint": "eslint . --ext .js,.json",
-    "lint-fix": "eslint . --ext .js,.json --fix"
+    "lint": "eslint . --ext .js",
+    "lint-fix": "eslint . --ext .js --fix"
   },
   "dependencies": {
     "@discordjs/rest": "^1.0.1",
