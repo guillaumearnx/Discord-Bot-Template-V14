@@ -11,8 +11,8 @@ module.exports = {
     },
     options: [
         //Optionnal fields
-        {type: 7, name: 'user', description: 'Mention user.', required: false},
-        {type: 8, name: 'channel', description: 'Mention channel.', required: true},
+        {type: 6, name: 'user', description: 'Mention user.', required: false},
+        {type: 7, name: 'channel', description: 'Mention channel.', required: true},
         {
             type: 4, name: 'mode', description: 'Application mode.', required: false,
             choices: [
